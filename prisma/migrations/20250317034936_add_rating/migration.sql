@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `product` ADD COLUMN `rating` DOUBLE NOT NULL DEFAULT 5.0;
