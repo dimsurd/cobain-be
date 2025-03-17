@@ -29,21 +29,17 @@ model Product {
 }
 
 model Order {
-  id                    Int                 @id @default(autoincrement())
-  orderNumber           String              @unique
-  name                  String
-  email                 String
-  city                  String
-  postalCode            String
-  shippingAddress       String
-  totalAmount           Decimal
-  status                OrderStatus         @default(PENDING)
-  paymentUrl            String?
-  midtransTransactionId String?
-  items                 OrderItem[]
-  payment               Payment?
-  emailNotifications    EmailNotification[]
-  createdAt             DateTime            @default(now())
+  id              Int          @id @default(autoincrement())
+  orderNumber     String       @unique
+  name            String
+  email           String
+  city            String
+  postalCode      String
+  shippingAddress String
+  totalAmount     Decimal
+  status          OrderStatus  @default(PENDING)
+  items           OrderItem[]
+  createdAt       DateTime     @default(now())
 }
 
 model OrderItem {
@@ -57,30 +53,6 @@ model OrderItem {
   createdAt DateTime @default(now())
 }
 
-model Payment {
-  id                    Int           @id @default(autoincrement())
-  order                 Order         @relation(fields: [orderId], references: [id])
-  orderId               Int           @unique
-  midtransTransactionId String        @unique
-  paymentMethod         String
-  amount                Decimal
-  status                PaymentStatus @default(PENDING)
-  paidAt                DateTime?
-  createdAt             DateTime      @default(now())
-}
-
-model EmailNotification {
-  id             Int         @id @default(autoincrement())
-  order          Order       @relation(fields: [orderId], references: [id])
-  orderId        Int
-  recipientEmail String
-  subject        String
-  message        String
-  status         EmailStatus @default(PENDING)
-  createdAt      DateTime    @default(now())
-  sentAt         DateTime?
-}
-
 enum OrderStatus {
   PENDING
   PAID
@@ -88,16 +60,4 @@ enum OrderStatus {
   CANCELED
   SHIPPED
   DELIVERED
-}
-
-enum PaymentStatus {
-  PENDING
-  SUCCESS
-  FAILED
-}
-
-enum EmailStatus {
-  PENDING
-  SENT
-  FAILED
 }
